@@ -1,5 +1,4 @@
 import { Page } from "puppeteer";
-import { RealEstateAttributes } from "real-estate-item/real-estate-attributes.entity";
 import {
   RealEstateItem,
   RealEstateItemAttributes,
@@ -11,7 +10,7 @@ export async function queryRealEstateItem(
   const body = await page.$("body");
 
   return await body?.evaluate((body) => {
-    const title = body.querySelector(".UIMainTitle")?.textContent;
+    const title = body.querySelector(".UIMainTitle")?.textContent?.trim();
 
     const developer = body.querySelector(
       ".BuildingContacts-developer-name span"
@@ -21,9 +20,21 @@ export async function queryRealEstateItem(
 
     const attributesOfInterest = attributes.reduce<RealEstateItemAttributes>(
       (acc, attribute, index) => {
+        const realEstateAttributes = {
+          "0": "class",
+          "3": "construction_technology",
+          "4": "walls",
+          "5": "insulation",
+          "6": "heating",
+          "8": "num_apartments",
+          "9": "state",
+          "10": "protected_area",
+          "11": "parking",
+        } as const;
+
         const attributeOfInterest: keyof RealEstateItemAttributes =
-          RealEstateAttributes.map[
-            index as unknown as keyof typeof RealEstateAttributes.map
+          realEstateAttributes[
+            index as unknown as keyof typeof realEstateAttributes
           ];
 
         if (!attributeOfInterest) {

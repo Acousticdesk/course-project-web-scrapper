@@ -49,5 +49,7 @@ import { RealEstateItem } from "real-estate-item/interface";
     Logger.log("Done ✅");
   }
 
+  fs.writeFileSync("real-estate.json", JSON.stringify(realEstate, null, 2));
+
   await browser.close();
 })();
