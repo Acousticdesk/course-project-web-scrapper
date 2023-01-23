@@ -1,6 +1,6 @@
 # app artifacts
 .idea
-.dist
+dist
 node_modules
 
 # script output
