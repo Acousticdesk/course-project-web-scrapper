@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "scrap": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +13,7 @@
   "description": "",
   "dependencies": {
     "chalk": "^5.2.0",
+    "dotenv": "^16.0.3",
     "jquery": "^3.6.3",
     "puppeteer": "^19.5.2"
   },

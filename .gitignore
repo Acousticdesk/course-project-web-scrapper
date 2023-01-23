@@ -1,2 +1,7 @@
+# app artifacts
 .idea
+.dist
 node_modules
+
+# script output
+links.json
