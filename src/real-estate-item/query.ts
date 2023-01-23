@@ -19,31 +19,30 @@ export async function queryRealEstateItem(
     const attributes = [...body.querySelectorAll(".BuildingAttributes-info")];
 
     const attributesOfInterest = attributes.reduce<RealEstateItemAttributes>(
-      (acc, attribute, index) => {
-        const realEstateAttributes = {
-          "0": "class",
-          "3": "construction_technology",
-          "4": "walls",
-          "5": "insulation",
-          "6": "heating",
-          "8": "num_apartments",
-          "9": "state",
-          "10": "protected_area",
-          "11": "parking",
+      (acc, attribute) => {
+        const realEstateAttributesMap = {
+          клас: "class",
+          "технологія будівництва": "construction_technology",
+          стіни: "walls",
+          утеплення: "insulation",
+          опалення: "heating",
+          "кількість квартир": "num_apartments",
+          "стан квартири": "state",
+          "закрита територія": "protected_area",
+          паркінг: "parking",
         } as const;
 
-        const attributeOfInterest: keyof RealEstateItemAttributes =
-          realEstateAttributes[
-            index as unknown as keyof typeof realEstateAttributes
-          ];
+        const currentAttribute = attribute
+          .querySelector(".BuildingAttributes-name")
+          ?.textContent?.toLowerCase();
 
-        if (!attributeOfInterest) {
-          return acc;
+        if (currentAttribute && currentAttribute in realEstateAttributesMap) {
+          const currentAttributeTyped =
+            currentAttribute as (typeof realEstateAttributesMap)[keyof typeof realEstateAttributesMap];
+          acc[currentAttributeTyped] = attribute.querySelector(
+            ".BuildingAttributes-value"
+          )?.textContent;
         }
-
-        acc[attributeOfInterest] = attribute.querySelector(
-          ".BuildingAttributes-value"
-        )?.textContent;
 
         return acc;
       },
