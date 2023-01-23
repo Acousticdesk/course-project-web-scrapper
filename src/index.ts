@@ -3,8 +3,10 @@ import fs from "fs";
 dotenv.config();
 
 import puppeteer from "puppeteer";
+import chalk from "chalk";
 
 import { queryLinks } from "links/query";
+import { ScrapperLink } from "links/interfaces";
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -12,14 +14,20 @@ import { queryLinks } from "links/query";
   });
   const page = await browser.newPage();
 
-  await page.goto(process.env.WEBSITE);
+  let links: ScrapperLink[] = [];
 
-  await page.waitForSelector("#search-results");
+  for (let i = 1; i <= Number(process.env.NUM_PAGES_TO_SCRAP); i++) {
+    await page.goto(`${process.env.WEBSITE}?page=${i}`);
+    await page.waitForSelector("#search-results");
 
-  fs.writeFileSync(
-    "links.json",
-    JSON.stringify(await queryLinks(page), null, 2)
-  );
+    const linksOnPage = await queryLinks(page);
+
+    if (linksOnPage) {
+      links = links.concat(linksOnPage);
+    }
+  }
+
+  fs.writeFileSync("links.json", JSON.stringify(links, null, 2));
 
   await browser.close();
 })();
