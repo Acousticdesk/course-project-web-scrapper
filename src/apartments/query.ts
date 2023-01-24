@@ -19,7 +19,7 @@ export async function queryApartments(page: Page) {
 
         // we need to use window, not global
         // this is because this function runs in browser
-        const price = priceRaw
+        const pricePerUnit = priceRaw
           ? (window.parseInt(priceRaw[0], 10) +
               window.parseInt(priceRaw[1], 10)) /
             2
@@ -40,7 +40,10 @@ export async function queryApartments(page: Page) {
         const area = areaRaw ? window.parseInt(areaRaw, 10) : null;
         const rooms = roomsRaw ? window.parseInt(roomsRaw, 10) : null;
 
+        const price = pricePerUnit && area ? pricePerUnit * area : null;
+
         return {
+          pricePerUnit,
           price,
           area,
           rooms,
