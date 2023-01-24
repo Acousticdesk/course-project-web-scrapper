@@ -11,7 +11,7 @@ export interface RealEstateItemAttributes {
 }
 
 export interface RealEstateItem {
-  title: string | null | undefined;
+  residence: string | null | undefined;
   developer: string | null | undefined;
   attributes: RealEstateItemAttributes;
 }

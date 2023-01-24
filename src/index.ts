@@ -8,7 +8,8 @@ import { queryLinks } from "links/query";
 import { ScrapperLink } from "links/interfaces";
 import { Logger } from "logger/logger.entity";
 import { queryRealEstateItem } from "real-estate-item/query";
-import { RealEstateItem } from "real-estate-item/interface";
+import { queryApartments } from "apartments/query";
+import { Apartment } from "apartments/interfaces";
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -33,23 +34,38 @@ import { RealEstateItem } from "real-estate-item/interface";
 
   fs.writeFileSync("links.json", JSON.stringify(links, null, 2));
 
-  let realEstate: RealEstateItem[] = [];
+  let apartments: Apartment[] = [];
 
   for (let i = 0; i < links.length; i++) {
+    if (i === Number(process.env.NUM_RESIDENCES_TO_SCRAP)) {
+      break;
+    }
+
     Logger.log(`Scrapping ${links[i].link}...`);
     await page.goto(links[i].link);
     await page.waitForSelector("body");
 
     const realEstateItem = await queryRealEstateItem(page);
 
-    if (realEstateItem) {
-      realEstate = realEstate.concat(realEstateItem);
-    }
+    await page.goto(`${links[i].link}/планування`);
+
+    const apartmentsBasicInformation = await queryApartments(page);
+
+    const apartmentsOnPage = apartmentsBasicInformation
+      ? apartmentsBasicInformation.map((apartmentBasicInformation) => {
+          return {
+            ...realEstateItem,
+            ...apartmentBasicInformation,
+          } as Apartment;
+        })
+      : [];
+
+    apartments = apartments.concat(apartmentsOnPage);
 
     Logger.log("Done ✅");
   }
 
-  fs.writeFileSync("real-estate.json", JSON.stringify(realEstate, null, 2));
+  fs.writeFileSync("real-estate.json", JSON.stringify(apartments, null, 2));
 
   await browser.close();
 })();
