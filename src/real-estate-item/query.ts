@@ -10,7 +10,7 @@ export async function queryRealEstateItem(
   const body = await page.$("body");
 
   return await body?.evaluate((body) => {
-    const title = body.querySelector(".UIMainTitle")?.textContent?.trim();
+    const residence = body.querySelector(".UIMainTitle")?.textContent?.trim();
 
     const developer = body.querySelector(
       ".BuildingContacts-developer-name span"
@@ -50,7 +50,7 @@ export async function queryRealEstateItem(
     );
 
     return {
-      title,
+      residence,
       developer,
       attributes: attributesOfInterest,
     };
