@@ -92,6 +92,7 @@ export async function queryRealEstateItem(
       }
     }
 
+    // TODO akicha: Sometimes the developer is null, find out in which case this happens
     return {
       residence,
       developer,
