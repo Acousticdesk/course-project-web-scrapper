@@ -22,6 +22,7 @@ export async function queryRealEstateItem(
 
     const attributes = attributeElements.reduce<RealEstateItemAttributes>(
       (acc, attribute) => {
+        // TODO akicha: num_aparments is a String, but should be a number
         const realEstateAttributesMap = {
           клас: "class",
           "технологія будівництва": "construction_technology",
@@ -42,6 +43,7 @@ export async function queryRealEstateItem(
           const currentAttributeTyped =
             currentAttribute as (typeof realEstateAttributesMap)[keyof typeof realEstateAttributesMap];
 
+          // TODO akicha: Sometimes class of the property is null, find out in which case this happens
           acc[
             realEstateAttributesMap[
               currentAttributeTyped as keyof typeof realEstateAttributesMap
