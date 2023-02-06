@@ -65,7 +65,7 @@ import { Apartment } from "apartments/interfaces";
     Logger.log("Done ✅");
   }
 
-  fs.writeFileSync("real-estate.json", JSON.stringify(apartments, null, 2));
+  fs.writeFileSync(`real-estate-${Date.now()}.json`, JSON.stringify(apartments, null, 2));
 
   await browser.close();
 })();
