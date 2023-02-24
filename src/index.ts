@@ -37,10 +37,7 @@ import { Apartment } from "apartments/interfaces";
   let apartments: Apartment[] = [];
 
   for (let i = 0; i < links.length; i++) {
-    if (
-      i === Number(process.env.NUM_RESIDENCES_TO_SCRAP) ||
-      apartments.length > Number(process.env.NUM_APARTMENTS_TO_SCRAP)
-    ) {
+    if (i === Number(process.env.NUM_RESIDENCES_TO_SCRAP)) {
       break;
     }
 
@@ -63,15 +60,9 @@ import { Apartment } from "apartments/interfaces";
         })
       : [];
 
-    // apartments = apartments.concat(apartmentsOnPage);
-
-    for (let i = 0; i < apartmentsOnPage.length; i += 1) {
-      if (apartments.length >= Number(process.env.NUM_APARTMENTS_TO_SCRAP)) {
-        break;
-      }
+    for (let i = 0; i < Number(process.env.NUM_APARTMENTS_TO_SCRAP); i += 1) {
       apartments.push(apartmentsOnPage[i]);
     }
-
     Logger.log("Done ✅");
   }
 

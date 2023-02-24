@@ -96,7 +96,7 @@ export async function queryRealEstateItem(
 
     const descriptionElement = body.querySelector(".BuildingDescription-text");
 
-    const description = financialsElement
+    const description = descriptionElement
       ? // @ts-ignore
         descriptionElement.textContent.trim().replace(/[\n\t]/g, "")
       : "";
