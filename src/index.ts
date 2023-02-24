@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import fs from "fs";
 dotenv.config();
 
-import puppeteer from "puppeteer";
+import puppeteer, { unregisterCustomQueryHandler } from "puppeteer";
 
 import { queryLinks } from "links/query";
 import { ScrapperLink } from "links/interfaces";
@@ -37,7 +37,10 @@ import { Apartment } from "apartments/interfaces";
   let apartments: Apartment[] = [];
 
   for (let i = 0; i < links.length; i++) {
-    if (i === Number(process.env.NUM_RESIDENCES_TO_SCRAP)) {
+    if (
+      i === Number(process.env.NUM_RESIDENCES_TO_SCRAP) ||
+      apartments.length > Number(process.env.NUM_APARTMENTS_TO_SCRAP)
+    ) {
       break;
     }
 
@@ -60,12 +63,22 @@ import { Apartment } from "apartments/interfaces";
         })
       : [];
 
-    apartments = apartments.concat(apartmentsOnPage);
+    // apartments = apartments.concat(apartmentsOnPage);
+
+    for (let i = 0; i < apartmentsOnPage.length; i += 1) {
+      if (apartments.length >= Number(process.env.NUM_APARTMENTS_TO_SCRAP)) {
+        break;
+      }
+      apartments.push(apartmentsOnPage[i]);
+    }
 
     Logger.log("Done ✅");
   }
 
-  fs.writeFileSync(`real-estate-${Date.now()}.json`, JSON.stringify(apartments, null, 2));
+  fs.writeFileSync(
+    `real-estate-${Date.now()}.json`,
+    JSON.stringify(apartments, null, 2)
+  );
 
   await browser.close();
 })();
