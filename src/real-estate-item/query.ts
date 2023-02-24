@@ -94,12 +94,20 @@ export async function queryRealEstateItem(
       }
     }
 
+    const descriptionElement = body.querySelector(".BuildingDescription-text");
+
+    const description = financialsElement
+      ? // @ts-ignore
+        descriptionElement.textContent.trim().replace(/[\n\t]/g, "")
+      : "";
+
     // TODO akicha: Sometimes the developer is null, find out in which case this happens
     return {
       residence,
       developer,
       attributes,
       financials,
+      description,
     };
   });
 }

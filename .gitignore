@@ -5,5 +5,5 @@ node_modules
 
 # script output
 links.json
-real-estate.json
+real-estate*.json
 .env
