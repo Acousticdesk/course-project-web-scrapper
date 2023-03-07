@@ -42,11 +42,50 @@ export async function queryApartments(page: Page) {
 
         const price = pricePerUnit && area ? pricePerUnit * area : null;
 
+        const floors = [
+          ...planCard.querySelectorAll(".PlansCard-labels .UILabel"),
+        ]
+          .filter((label) => label.textContent?.match(/Поверхи:\s/g))
+          .map((floorLabel) => {
+            const text = floorLabel.textContent;
+
+            if (text?.includes(",")) {
+              const floors = text
+                .replace("Поверхи: ", "")
+                .split(",")
+                .map((s) => s.trim());
+              const result = floors.reduce(
+                (acc, floor) => acc + Number(floor),
+                0
+              );
+              return result ? result / floors.length : null;
+            }
+
+            if (text?.includes("-")) {
+              const floors = text
+                .replace("Поверхи: ", "")
+                .split("-")
+                .map((s) => s.trim());
+              const result = floors.reduce(
+                (acc, floor) => acc + Number(floor),
+                0
+              );
+              return result ? result / floors.length : null;
+            }
+
+            const result = text?.match(/\d+/);
+
+            return result ? Number(result) : null;
+          });
+
+        const floor = floors.length ? floors[0] : null;
+
         return {
           pricePerUnit,
           price,
           area,
           rooms,
+          floor,
         };
       });
 
