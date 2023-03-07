@@ -49,15 +49,16 @@ export function getApartmentAttributes() {
     (acc, attribute) => {
       // TODO akicha: num_aparments is a String, but should be a number
       const realEstateAttributesMap = {
-        клас: "class",
-        "технологія будівництва": "construction_technology",
-        стіни: "walls",
-        утеплення: "insulation",
-        опалення: "heating",
-        "кількість квартир": "num_apartments",
-        "стан квартири": "state",
-        "закрита територія": "protected_area",
-        паркінг: "parking",
+        // клас: "class",
+        // "технологія будівництва": "construction_technology",
+        // стіни: "walls",
+        // утеплення: "insulation",
+        // опалення: "heating",
+        "кількість квартир": "numApartmentsTotal",
+        "висота стелі": "ceilingHeight",
+        // "стан квартири": "state",
+        // "закрита територія": "protected_area",
+        // паркінг: "parking",
       } as const;
 
       const currentAttribute = attribute
@@ -68,12 +69,27 @@ export function getApartmentAttributes() {
         const currentAttributeTyped =
           currentAttribute as (typeof realEstateAttributesMap)[keyof typeof realEstateAttributesMap];
 
+        let value = attribute.querySelector(
+          ".BuildingAttributes-value"
+        )?.textContent;
+
+        if (currentAttribute === "висота стелі") {
+          value = value?.match(/\d+/g)?.[0];
+          // @ts-ignore
+          value = value ? Number(value) : value;
+        }
+
+        if (currentAttribute === "кількість квартир") {
+          // @ts-ignore
+          value = value ? Number(value) : value;
+        }
+
         // TODO akicha: Sometimes class of the property is null, find out in which case this happens
         acc[
           realEstateAttributesMap[
             currentAttributeTyped as keyof typeof realEstateAttributesMap
           ]
-        ] = attribute.querySelector(".BuildingAttributes-value")?.textContent;
+        ] = value;
       }
 
       return acc;

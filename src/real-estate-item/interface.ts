@@ -4,7 +4,8 @@ export interface RealEstateItemAttributes {
   walls: string | null | undefined;
   insulation: string | null | undefined;
   heating: string | null | undefined;
-  num_apartments: string | null | undefined;
+  numApartmentsTotal: string | null | undefined;
+  ceilingHeight: string | null | undefined;
   state: string | null | undefined;
   protected_area: string | null | undefined;
   parking: string | null | undefined;
@@ -18,6 +19,7 @@ export interface RealEstateItemFinancials {
 export interface RealEstateItem {
   residence: string | null | undefined;
   developer: string | null | undefined;
+  address: string | null | undefined;
   attributes: RealEstateItemAttributes;
   financials: RealEstateItemFinancials;
   description: string;

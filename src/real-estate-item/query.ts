@@ -1,6 +1,9 @@
 import { Page } from "puppeteer";
-import { RealEstateItem } from "real-estate-item/interface";
-import { getApartmentYear } from "./query-slices";
+import {
+  RealEstateItem,
+  RealEstateItemAttributes,
+} from "real-estate-item/interface";
+import { getApartmentAttributes, getApartmentYear } from "./query-slices";
 
 export async function queryRealEstateItem(
   page: Page
@@ -12,6 +15,10 @@ export async function queryRealEstateItem(
 
     const developer = body.querySelector(
       ".BuildingContacts-developer-name span"
+    )?.textContent;
+
+    const address = body.querySelector(
+      "#location .UISubtitle .UISubtitle-content"
     )?.textContent;
 
     const descriptionElement = body.querySelector(".BuildingDescription-text");
@@ -27,12 +34,13 @@ export async function queryRealEstateItem(
       residence,
       developer,
       description,
+      address,
     };
   });
 
-  // const attributes = (await body?.evaluate(
-  //   getApartmentAttributes
-  // )) as RealEstateItemAttributes;
+  const attributes = (await body?.evaluate(
+    getApartmentAttributes
+  )) as RealEstateItemAttributes;
   //
   // const financials = (await body?.evaluate(
   //   getApartmentFinancialDetails
@@ -42,7 +50,7 @@ export async function queryRealEstateItem(
 
   return {
     ...realEstateItem,
-    // attributes,
+    ...attributes,
     // financials,
     // @ts-ignore
     year,
