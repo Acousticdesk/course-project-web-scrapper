@@ -4,12 +4,52 @@ import {
   RealEstateItemAttributes,
 } from "real-estate-item/interface";
 
+function getApartmentYear() {
+  function getYear(d: string | null) {
+    return d?.match(/202\d/g)?.[0];
+  }
+
+  const dateSelectElement = document.querySelector(
+    "#price-history .UISelect-input"
+  );
+
+  let years;
+
+  if (dateSelectElement) {
+    // @ts-ignore
+    dateSelectElement.click();
+
+    const yearsDropdown = document.querySelector(".UIPopup.-opened");
+
+    years = !yearsDropdown
+      ? []
+      : [...yearsDropdown.querySelectorAll(".UIRadio-content")]
+          .map((d) => d.textContent)
+          .map(getYear)
+          .filter((d) => !!d);
+  } else {
+    years = [
+      getYear(
+        (
+          document.querySelector(
+            'input[name="date-select"]'
+          ) as HTMLInputElement
+        )?.value
+      ),
+    ];
+  }
+
+  return years.length
+    ? years.reduce((acc, y) => acc + Number(y), 0) / years.length
+    : null;
+}
+
 export async function queryRealEstateItem(
   page: Page
 ): Promise<RealEstateItem | undefined> {
   const body = await page.$("body");
 
-  return await body?.evaluate((body) => {
+  const realEstateItem = await body?.evaluate(async (body) => {
     const residence = body.querySelector(".UIMainTitle")?.textContent?.trim();
 
     const developer = body.querySelector(
@@ -110,4 +150,12 @@ export async function queryRealEstateItem(
       description,
     };
   });
+
+  const year = await body?.evaluate(getApartmentYear);
+
+  return {
+    ...realEstateItem,
+    // @ts-ignore
+    year,
+  };
 }

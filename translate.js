@@ -32,7 +32,7 @@ function delay(ms) {
   }
 
   fs.writeFileSync(
-    `translated-${Date.now()}.json`,
+    `real-estate-translated-${Date.now()}.json`,
     JSON.stringify(translated, null, 2)
   );
 })();
