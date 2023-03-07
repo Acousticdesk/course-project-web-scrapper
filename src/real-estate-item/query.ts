@@ -20,6 +20,8 @@ export async function queryRealEstateItem(
       ? descriptionElement.textContent?.trim().replace(/[\n\t]/g, "")
       : "";
 
+    // TODO akicha: also add average per district based on the table https://dom.ria.com/uk/novostroyki/tseny-kiev/
+
     // TODO akicha: Sometimes the developer is null, find out in which case this happens
     return {
       residence,
