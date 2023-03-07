@@ -1,48 +1,6 @@
 import { Page } from "puppeteer";
-import {
-  RealEstateItem,
-  RealEstateItemAttributes,
-} from "real-estate-item/interface";
-
-function getApartmentYear() {
-  function getYear(d: string | null) {
-    return d?.match(/202\d/g)?.[0];
-  }
-
-  const dateSelectElement = document.querySelector(
-    "#price-history .UISelect-input"
-  );
-
-  let years;
-
-  if (dateSelectElement) {
-    // @ts-ignore
-    dateSelectElement.click();
-
-    const yearsDropdown = document.querySelector(".UIPopup.-opened");
-
-    years = !yearsDropdown
-      ? []
-      : [...yearsDropdown.querySelectorAll(".UIRadio-content")]
-          .map((d) => d.textContent)
-          .map(getYear)
-          .filter((d) => !!d);
-  } else {
-    years = [
-      getYear(
-        (
-          document.querySelector(
-            'input[name="date-select"]'
-          ) as HTMLInputElement
-        )?.value
-      ),
-    ];
-  }
-
-  return years.length
-    ? years.reduce((acc, y) => acc + Number(y), 0) / years.length
-    : null;
-}
+import { RealEstateItem } from "real-estate-item/interface";
+import { getApartmentYear } from "./query-slices";
 
 export async function queryRealEstateItem(
   page: Page
@@ -56,105 +14,34 @@ export async function queryRealEstateItem(
       ".BuildingContacts-developer-name span"
     )?.textContent;
 
-    const attributeElements = [
-      ...body.querySelectorAll(".BuildingAttributes-info"),
-    ];
-
-    const attributes = attributeElements.reduce<RealEstateItemAttributes>(
-      (acc, attribute) => {
-        // TODO akicha: num_aparments is a String, but should be a number
-        const realEstateAttributesMap = {
-          клас: "class",
-          "технологія будівництва": "construction_technology",
-          стіни: "walls",
-          утеплення: "insulation",
-          опалення: "heating",
-          "кількість квартир": "num_apartments",
-          "стан квартири": "state",
-          "закрита територія": "protected_area",
-          паркінг: "parking",
-        } as const;
-
-        const currentAttribute = attribute
-          .querySelector(".BuildingAttributes-name")
-          ?.textContent?.toLowerCase();
-
-        if (currentAttribute && currentAttribute in realEstateAttributesMap) {
-          const currentAttributeTyped =
-            currentAttribute as (typeof realEstateAttributesMap)[keyof typeof realEstateAttributesMap];
-
-          // TODO akicha: Sometimes class of the property is null, find out in which case this happens
-          acc[
-            realEstateAttributesMap[
-              currentAttributeTyped as keyof typeof realEstateAttributesMap
-            ]
-          ] = attribute.querySelector(".BuildingAttributes-value")?.textContent;
-        }
-
-        return acc;
-      },
-      {} as RealEstateItemAttributes
-    );
-
-    const financialsElement = body.querySelector("#credit_installments");
-
-    let financials: {
-      installmentPlan?: boolean;
-      installmentPlanTerm?: number | null;
-    } = {};
-
-    if (financialsElement) {
-      let installmentElement = null;
-      let hasInstallmentPlan = false;
-
-      [...financialsElement.querySelectorAll(".UICardLink-title")].forEach(
-        (element) => {
-          if (element.textContent?.toLowerCase()?.includes("розтермінування")) {
-            installmentElement = element;
-            hasInstallmentPlan = true;
-          }
-        }
-      );
-
-      if (installmentElement) {
-        const installmentPlanDetailsRaw = (installmentElement as Element)
-          .closest(".UICardLink-content")
-          ?.querySelector(".UICardLink-description")
-          ?.textContent?.trim();
-
-        // на 1 рік, на 2 роки ...
-        const installmentPlanDetails = installmentPlanDetailsRaw
-          ? /на\s(\d)\sр/g.exec(installmentPlanDetailsRaw)?.[1]
-          : null;
-
-        financials.installmentPlan = true;
-        financials.installmentPlanTerm = installmentPlanDetails
-          ? window.parseInt(installmentPlanDetails, 10)
-          : null;
-      }
-    }
-
     const descriptionElement = body.querySelector(".BuildingDescription-text");
 
     const description = descriptionElement
-      ? // @ts-ignore
-        descriptionElement.textContent.trim().replace(/[\n\t]/g, "")
+      ? descriptionElement.textContent?.trim().replace(/[\n\t]/g, "")
       : "";
 
     // TODO akicha: Sometimes the developer is null, find out in which case this happens
     return {
       residence,
       developer,
-      attributes,
-      financials,
       description,
     };
   });
+
+  // const attributes = (await body?.evaluate(
+  //   getApartmentAttributes
+  // )) as RealEstateItemAttributes;
+  //
+  // const financials = (await body?.evaluate(
+  //   getApartmentFinancialDetails
+  // )) as RealEstateItemFinancials;
 
   const year = await body?.evaluate(getApartmentYear);
 
   return {
     ...realEstateItem,
+    // attributes,
+    // financials,
     // @ts-ignore
     year,
   };

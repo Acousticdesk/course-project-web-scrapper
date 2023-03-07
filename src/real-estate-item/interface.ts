@@ -10,8 +10,15 @@ export interface RealEstateItemAttributes {
   parking: string | null | undefined;
 }
 
+export interface RealEstateItemFinancials {
+  installmentPlan: boolean | null | undefined;
+  installmentPlanTerm: number | null | undefined;
+}
+
 export interface RealEstateItem {
   residence: string | null | undefined;
   developer: string | null | undefined;
   attributes: RealEstateItemAttributes;
+  financials: RealEstateItemFinancials;
+  description: string;
 }
