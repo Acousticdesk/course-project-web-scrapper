@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "scrap": "NODE_PATH=./dist node dist/index.js",
-    "map-city-center-distance": "NODE_PATH=./dist node dist/src/mappers/directions.js"
+    "map-city-center-distance": "NODE_PATH=./dist node dist/mappers/directions.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "@vitalets/google-translate-api": "^9.1.0",
     "axios": "^1.3.4",
     "chalk": "^5.2.0",
+    "command-line-args": "^5.2.1",
     "dotenv": "^16.0.3",
     "google-translate-api": "^2.3.0",
     "install": "^0.13.0",

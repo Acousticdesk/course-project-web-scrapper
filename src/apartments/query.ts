@@ -19,7 +19,7 @@ export async function queryApartments(page: Page) {
 
         // we need to use window, not global
         // this is because this function runs in browser
-        const pricePerUnit = priceRaw
+        const pricePerSquareMeter = priceRaw
           ? (window.parseInt(priceRaw[0], 10) +
               window.parseInt(priceRaw[1], 10)) /
             2
@@ -40,7 +40,8 @@ export async function queryApartments(page: Page) {
         const area = areaRaw ? window.parseInt(areaRaw, 10) : null;
         const rooms = roomsRaw ? window.parseInt(roomsRaw, 10) : null;
 
-        const price = pricePerUnit && area ? pricePerUnit * area : null;
+        const price =
+          pricePerSquareMeter && area ? pricePerSquareMeter * area : null;
 
         const floors = [
           ...planCard.querySelectorAll(".PlansCard-labels .UILabel"),
@@ -81,7 +82,7 @@ export async function queryApartments(page: Page) {
         const floor = floors.length ? floors[0] : null;
 
         return {
-          pricePerUnit,
+          pricePerSquareMeter,
           price,
           area,
           rooms,

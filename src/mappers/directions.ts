@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as dotenv from "dotenv";
 import fs from "fs";
-import realEstateDataset from "../../real-estate-1678300661746.json";
+import realEstateDataset from "../../real-estate-1678302244580.json";
 
 dotenv.config();
 
@@ -11,7 +11,6 @@ class DirectionsMapper {
   static KYIV_CITY_CENTER_DESTINATION = "метро Хрещатик";
   // It returns minutes required to get to the destination from origin
   static async calculateDirections(origin: string, destination: string) {
-    console.log("was called");
     const originWithCity = `м. Київ, ${origin}, 02000`;
     const response = await axios.get<google.maps.DirectionsResult>(
       `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(
