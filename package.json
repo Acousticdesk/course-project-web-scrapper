@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "scrap": "NODE_PATH=./dist/src node dist/src/index.js",
-    "map-city-center-distance": "NODE_PATH=./dist/src node dist/src/mappers/directions.js"
+    "map-city-center-distance": "NODE_PATH=./dist/src node dist/src/mappers/directions.js",
+    "map-price-statistics": "NODE_PATH=./dist/src node dist/src/mappers/price-statistics.js"
   },
   "keywords": [],
   "author": "",
