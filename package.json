@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "scrap": "NODE_PATH=./dist node dist/index.js",
-    "map-city-center-distance": "NODE_PATH=./dist node dist/mappers/directions.js"
+    "scrap": "NODE_PATH=./dist/src node dist/src/index.js",
+    "map-city-center-distance": "NODE_PATH=./dist/src node dist/src/mappers/directions.js"
   },
   "keywords": [],
   "author": "",

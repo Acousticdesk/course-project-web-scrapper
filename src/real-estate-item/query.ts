@@ -21,6 +21,11 @@ export async function queryRealEstateItem(
       "#location .UISubtitle .UISubtitle-content"
     )?.textContent;
 
+    const district = document
+      .querySelector(".BuildingContacts-breadcrumbs")
+      ?.textContent?.replace("Київ", "")
+      .trim();
+
     const descriptionElement = body.querySelector(".BuildingDescription-text");
 
     const description = descriptionElement
@@ -35,6 +40,7 @@ export async function queryRealEstateItem(
       developer,
       description,
       address,
+      district,
     };
   });
 
