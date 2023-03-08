@@ -5,10 +5,13 @@ import realEstateDataset from "../../real-estate-1678300661746.json";
 
 dotenv.config();
 
+const memo = {};
+
 class DirectionsMapper {
   static KYIV_CITY_CENTER_DESTINATION = "метро Хрещатик";
   // It returns minutes required to get to the destination from origin
   static async calculateDirections(origin: string, destination: string) {
+    console.log("was called");
     const originWithCity = `м. Київ, ${origin}, 02000`;
     const response = await axios.get<google.maps.DirectionsResult>(
       `https://maps.googleapis.com/maps/api/directions/json?origin=${encodeURIComponent(
@@ -26,15 +29,30 @@ class DirectionsMapper {
   static async calculateDirectionsForDataset(
     dataset: typeof realEstateDataset
   ) {
-    const promises = dataset.map(async (realEstateItem) => ({
-      ...realEstateItem,
-      minutesToCityCenter: await DirectionsMapper.calculateDirections(
-        realEstateItem.address,
-        DirectionsMapper.KYIV_CITY_CENTER_DESTINATION
-      ),
-    }));
+    const result = [];
 
-    return await Promise.all(promises);
+    // sequential calls for proper memoization
+    for (let i = 0; i < dataset.length; i += 1) {
+      const realEstateItem = dataset[i];
+
+      const minutesToCityCenter =
+        // @ts-ignore
+        memo[realEstateItem.address] ||
+        (await DirectionsMapper.calculateDirections(
+          realEstateItem.address,
+          DirectionsMapper.KYIV_CITY_CENTER_DESTINATION
+        ));
+
+      // @ts-ignore
+      memo[realEstateItem.address] = minutesToCityCenter;
+
+      result.push({
+        ...realEstateItem,
+        minutesToCityCenter,
+      });
+    }
+
+    return result;
   }
 }
 
