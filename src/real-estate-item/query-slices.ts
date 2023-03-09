@@ -49,7 +49,7 @@ export function getApartmentAttributes() {
     (acc, attribute) => {
       // TODO akicha: num_aparments is a String, but should be a number
       const realEstateAttributesMap = {
-        // клас: "class",
+        клас: "class",
         // "технологія будівництва": "construction_technology",
         // стіни: "walls",
         // утеплення: "insulation",
