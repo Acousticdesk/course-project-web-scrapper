@@ -1,4 +1,5 @@
-import realEstateDataset from "../../real-estate-1678304309205.json";
+import { Dataset } from "../interfaces";
+const realEstateDataset: Dataset = require("../../real-estate-mapped.json");
 import fs from "fs";
 
 // https://www.unian.ua/society/top-naykriminalnishih-rayoniv-kiyeva-u-policiji-rozpovili-de-naybilshe-vbivstv-u-kiyevi-novini-kiyeva-11331248.html
@@ -38,7 +39,7 @@ class PriceStatisticsMapper {
 }
 
 fs.writeFileSync(
-  `real-estate-${Date.now()}.json`,
+  `real-estate-mapped.json`,
   JSON.stringify(
     PriceStatisticsMapper.calculateExpectedPrice(realEstateDataset),
     null,

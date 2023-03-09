@@ -5,11 +5,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "scrap": "NODE_PATH=./dist/src node dist/src/index.js",
-    "map-city-center-distance": "NODE_PATH=./dist/src node dist/src/mappers/directions.js",
-    "map-price-statistics": "NODE_PATH=./dist/src node dist/src/mappers/price-statistics.js",
-    "map-crime-statistics": "NODE_PATH=./dist/src node dist/src/mappers/crime-statistics.js",
-    "map-translate": "NODE_PATH=./dist/src node dist/src/mappers/translate.js"
+    "scrap": "NODE_PATH=./dist node dist/index.js",
+    "map-city-center-distance": "NODE_PATH=./dist node dist/mappers/city-center-distance.js",
+    "map-price-statistics": "NODE_PATH=./dist node dist/mappers/price-statistics.js",
+    "map-crime-statistics": "NODE_PATH=./dist node dist/mappers/crime-statistics.js",
+    "map-translate": "NODE_PATH=./dist node dist/mappers/translate.js",
+    "finalize-dataset": "npm run map-city-center-distance; npm run map-price-statistics; npm run map-crime-statistics; npm run map-translate"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,6 @@
 const { translate } = require("@vitalets/google-translate-api");
-import realEstate from "../../real-estate-1678302244580.json";
+import { Dataset } from "../interfaces";
+const realEstateDataset: Dataset = require("../../real-estate-mapped.json");
 const fs = require("fs");
 
 function delay(ms: number) {
@@ -9,7 +10,7 @@ function delay(ms: number) {
 }
 
 (async function () {
-  const promises = realEstate.map(async (value) => {
+  const promises = realEstateDataset.map(async (value) => {
     if (!value) {
       return value;
     }
@@ -31,7 +32,7 @@ function delay(ms: number) {
   }
 
   fs.writeFileSync(
-    `real-estate-${Date.now()}.json`,
+    `real-estate-mapped.json`,
     JSON.stringify(translated, null, 2)
   );
 })();

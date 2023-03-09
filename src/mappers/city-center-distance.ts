@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as dotenv from "dotenv";
 import fs from "fs";
-import realEstateDataset from "../../real-estate-1678302244580.json";
+import { Dataset } from "../interfaces";
+const realEstateDataset: Dataset = require("../../real-estate-mapped.json");
 
 dotenv.config();
 
@@ -60,7 +61,7 @@ class DirectionsMapper {
     await DirectionsMapper.calculateDirectionsForDataset(realEstateDataset);
 
   fs.writeFileSync(
-    `real-estate-${Date.now()}.json`,
+    `real-estate-mapped.json`,
     JSON.stringify(datasetWithDestinationToCityCenter, null, 2)
   );
 })();

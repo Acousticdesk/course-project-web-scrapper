@@ -1,4 +1,5 @@
-import realEstateDataset from "../../real-estate-1678304145096.json";
+import { Dataset } from "../interfaces";
+const realEstateDataset: Dataset = require("../../real-estate-mapped.json");
 import fs from "fs";
 
 // https://dom.ria.com/uk/novostroyki/tseny-kiev/
@@ -29,7 +30,7 @@ class PriceStatisticsMapper {
 
       return {
         ...realEstateItem,
-        crimeRateInDistrict:
+        assess:
           // @ts-ignore
           priceStatisticsPerDistrict[subjectDistrict] || null,
       };
@@ -38,7 +39,7 @@ class PriceStatisticsMapper {
 }
 
 fs.writeFileSync(
-  `real-estate-${Date.now()}.json`,
+  `real-estate-mapped.json`,
   JSON.stringify(
     PriceStatisticsMapper.calculateExpectedPrice(realEstateDataset),
     null,
