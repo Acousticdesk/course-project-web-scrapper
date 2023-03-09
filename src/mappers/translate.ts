@@ -9,26 +9,28 @@ function delay(ms: number) {
   });
 }
 
+const memo = {};
+
 (async function () {
-  const promises = realEstateDataset.map(async (value) => {
-    if (!value) {
-      return value;
-    }
-    return {
-      ...value,
-      description: (await translate(value.description, { to: "en" })).text,
-    };
-  });
-
-  // parallel
-  // const translated = await Promise.all(promises);
-
-  // sequential
   const translated = [];
 
-  for (const promise of promises) {
+  for (let i = 0; i < realEstateDataset.length; i += 1) {
+    // The delay is used not to DOS Google API
     await delay(1000);
-    translated.push(await promise);
+    const realEstateItem = realEstateDataset[i];
+
+    // @ts-ignore
+    const translation =
+      memo[realEstateItem.residence] ||
+      (await translate(realEstateItem.description, { to: "en" })).text;
+
+    // @ts-ignore
+    memo[realEstateItem.residence] = translation;
+
+    translated.push({
+      ...realEstateItem,
+      description: translation,
+    });
   }
 
   fs.writeFileSync(
