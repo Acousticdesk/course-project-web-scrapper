@@ -7,7 +7,8 @@
     "build": "npx tsc",
     "scrap": "NODE_PATH=./dist/src node dist/src/index.js",
     "map-city-center-distance": "NODE_PATH=./dist/src node dist/src/mappers/directions.js",
-    "map-price-statistics": "NODE_PATH=./dist/src node dist/src/mappers/price-statistics.js"
+    "map-price-statistics": "NODE_PATH=./dist/src node dist/src/mappers/price-statistics.js",
+    "map-crime-statistics": "NODE_PATH=./dist/src node dist/src/mappers/crime-statistics.js"
   },
   "keywords": [],
   "author": "",

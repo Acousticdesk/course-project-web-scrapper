@@ -1,6 +1,7 @@
 import realEstateDataset from "../../real-estate-1678304145096.json";
 import fs from "fs";
 
+// https://dom.ria.com/uk/novostroyki/tseny-kiev/
 const priceStatisticsPerDistrict = {
   Дарницький: 42027,
   Дніпровський: 34392,
@@ -28,8 +29,9 @@ class PriceStatisticsMapper {
 
       return {
         ...realEstateItem,
-        // @ts-ignore
-        assess: priceStatisticsPerDistrict[subjectDistrict] || null,
+        crimeRateInDistrict:
+          // @ts-ignore
+          priceStatisticsPerDistrict[subjectDistrict] || null,
       };
     });
   }
