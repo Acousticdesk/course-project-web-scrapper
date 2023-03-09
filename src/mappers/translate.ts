@@ -19,8 +19,8 @@ const memo = {};
     await delay(1000);
     const realEstateItem = realEstateDataset[i];
 
-    // @ts-ignore
     const translation =
+      // @ts-ignore
       memo[realEstateItem.residence] ||
       (await translate(realEstateItem.description, { to: "en" })).text;
 
