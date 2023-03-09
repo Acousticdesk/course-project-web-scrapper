@@ -59,7 +59,7 @@ export async function queryApartments(page: Page) {
                 (acc, floor) => acc + Number(floor),
                 0
               );
-              return result ? result / floors.length : null;
+              return result ? Math.floor(result / floors.length) : null;
             }
 
             if (text?.includes("-")) {
@@ -71,7 +71,7 @@ export async function queryApartments(page: Page) {
                 (acc, floor) => acc + Number(floor),
                 0
               );
-              return result ? result / floors.length : null;
+              return result ? Math.floor(result / floors.length) : null;
             }
 
             const result = text?.match(/\d+/);
