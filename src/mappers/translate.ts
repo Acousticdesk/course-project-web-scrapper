@@ -1,8 +1,8 @@
 const { translate } = require("@vitalets/google-translate-api");
-const realEstate = require("./real-estate-1677267283070.json");
+import realEstate from "../../real-estate-1678302244580.json";
 const fs = require("fs");
 
-function delay(ms) {
+function delay(ms: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
@@ -23,8 +23,7 @@ function delay(ms) {
   // const translated = await Promise.all(promises);
 
   // sequential
-
-  translated = [];
+  const translated = [];
 
   for (const promise of promises) {
     await delay(1000);
