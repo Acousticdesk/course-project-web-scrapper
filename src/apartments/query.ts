@@ -43,50 +43,50 @@ export async function queryApartments(page: Page) {
         const price =
           pricePerSquareMeter && area ? pricePerSquareMeter * area : null;
 
-        const floors = [
-          ...planCard.querySelectorAll(".PlansCard-labels .UILabel"),
-        ]
-          .filter((label) => label.textContent?.match(/Поверхи:\s/g))
-          .map((floorLabel) => {
-            const text = floorLabel.textContent;
+        // const floors = [
+        //   ...planCard.querySelectorAll(".PlansCard-labels .UILabel"),
+        // ]
+        //   .filter((label) => label.textContent?.match(/Поверхи:\s/g))
+        //   .map((floorLabel) => {
+        //     const text = floorLabel.textContent;
+        //
+        //     if (text?.includes(",")) {
+        //       const floors = text
+        //         .replace("Поверхи: ", "")
+        //         .split(",")
+        //         .map((s) => s.trim());
+        //       const result = floors.reduce(
+        //         (acc, floor) => acc + Number(floor),
+        //         0
+        //       );
+        //       return result ? Math.floor(result / floors.length) : null;
+        //     }
+        //
+        //     if (text?.includes("-")) {
+        //       const floors = text
+        //         .replace("Поверхи: ", "")
+        //         .split("-")
+        //         .map((s) => s.trim());
+        //       const result = floors.reduce(
+        //         (acc, floor) => acc + Number(floor),
+        //         0
+        //       );
+        //       return result ? Math.floor(result / floors.length) : null;
+        //     }
+        //
+        //     const result = text?.match(/\d+/);
+        //
+        //     return result ? Number(result) : null;
+        //   });
 
-            if (text?.includes(",")) {
-              const floors = text
-                .replace("Поверхи: ", "")
-                .split(",")
-                .map((s) => s.trim());
-              const result = floors.reduce(
-                (acc, floor) => acc + Number(floor),
-                0
-              );
-              return result ? Math.floor(result / floors.length) : null;
-            }
-
-            if (text?.includes("-")) {
-              const floors = text
-                .replace("Поверхи: ", "")
-                .split("-")
-                .map((s) => s.trim());
-              const result = floors.reduce(
-                (acc, floor) => acc + Number(floor),
-                0
-              );
-              return result ? Math.floor(result / floors.length) : null;
-            }
-
-            const result = text?.match(/\d+/);
-
-            return result ? Number(result) : null;
-          });
-
-        const floor = floors.length ? floors[0] : null;
+        // const floor = floors.length ? floors[0] : null;
 
         return {
-          pricePerSquareMeter,
+          // pricePerSquareMeter,
           price,
           area,
           rooms,
-          floor,
+          // floor,
         };
       });
 
