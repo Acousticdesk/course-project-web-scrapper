@@ -4,7 +4,7 @@ import { DatasetController } from "./files/dataset-controller";
 
 dotenv.config();
 
-import puppeteer, { unregisterCustomQueryHandler } from "puppeteer";
+import puppeteer from "puppeteer";
 
 import { queryLinks } from "links/query";
 import { ScrapperLink } from "links/interfaces";
@@ -82,11 +82,6 @@ import { Apartment } from "apartments/interfaces";
     }
     Logger.log("Done ✅");
   }
-
-  // fs.writeFileSync(
-  //   `real-estate-${Date.now()}.json`,
-  //   JSON.stringify(apartments, null, 2)
-  // );
 
   realEstateDatasetController.write("]");
   realEstateDatasetController.end();
