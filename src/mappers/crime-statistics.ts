@@ -22,6 +22,10 @@ class PriceStatisticsMapper {
       let subjectDistrict;
 
       for (const district in crimeStatisticsPerDistrict) {
+        if (!realEstateItem.district) {
+          break;
+        }
+
         if (realEstateItem.district.match(district)) {
           subjectDistrict = district;
           break;

@@ -26,11 +26,11 @@ export async function queryRealEstateItem(
       ?.textContent?.replace("Київ", "")
       .trim();
 
-    const descriptionElement = body.querySelector(".BuildingDescription-text");
+    // const descriptionElement = body.querySelector(".BuildingDescription-text");
 
-    const description = descriptionElement
-      ? descriptionElement.textContent?.trim().replace(/[\n\t]/g, "")
-      : "";
+    // const description = descriptionElement
+    //   ? descriptionElement.textContent?.trim().replace(/[\n\t]/g, "")
+    //   : "";
 
     // TODO akicha: also add average per district based on the table https://dom.ria.com/uk/novostroyki/tseny-kiev/
 
@@ -52,13 +52,13 @@ export async function queryRealEstateItem(
   //   getApartmentFinancialDetails
   // )) as RealEstateItemFinancials;
 
-  const year = await body?.evaluate(getApartmentYear);
+  // const year = await body?.evaluate(getApartmentYear);
 
   return {
     ...realEstateItem,
     ...attributes,
     // financials,
     // @ts-ignore
-    year,
+    // year,
   };
 }

@@ -17,10 +17,11 @@ export interface RealEstateItemAttributes {
 // }
 
 export interface RealEstateItem {
-  residence: string | null | undefined;
-  developer: string | null | undefined;
-  address: string | null | undefined;
-  attributes: RealEstateItemAttributes;
+  residence?: string | null | undefined;
+  developer?: string | null | undefined;
+  address?: string | null | undefined;
+  // attributes: RealEstateItemAttributes;
   // financials: RealEstateItemFinancials;
-  description: string;
+  // description: string;
+  class?: string | null | undefined;
 }
