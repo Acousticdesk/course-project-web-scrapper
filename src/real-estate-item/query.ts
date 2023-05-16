@@ -38,7 +38,7 @@ export async function queryRealEstateItem(
     return {
       residence,
       developer,
-      description,
+      // description,
       address,
       district,
     };
