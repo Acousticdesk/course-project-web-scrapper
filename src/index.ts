@@ -1,5 +1,7 @@
 import * as dotenv from "dotenv";
 import fs from "fs";
+import { DatasetController } from "./files/dataset-controller";
+
 dotenv.config();
 
 import puppeteer, { unregisterCustomQueryHandler } from "puppeteer";
@@ -34,7 +36,11 @@ import { Apartment } from "apartments/interfaces";
 
   fs.writeFileSync("links.json", JSON.stringify(links, null, 2));
 
-  let apartments: Apartment[] = [];
+  const realEstateDatasetController = new DatasetController(
+    `real-estate-${Date.now()}.json`
+  );
+
+  realEstateDatasetController.write("[");
 
   for (let i = 0; i < links.length; i++) {
     if (i === Number(process.env.NUM_RESIDENCES_TO_SCRAP)) {
@@ -60,16 +66,29 @@ import { Apartment } from "apartments/interfaces";
         })
       : [];
 
-    for (let i = 0; i < Number(process.env.NUM_APARTMENTS_TO_SCRAP); i += 1) {
-      apartments.push(apartmentsOnPage[i]);
+    for (
+      let i = 0;
+      i < Number(process.env.NUM_APARTMENTS_PER_RESIDENCE_TO_SCRAP);
+      i += 1
+    ) {
+      const apartment = apartmentsOnPage[i];
+
+      if (!apartment) {
+        break;
+      }
+
+      realEstateDatasetController.write(`${JSON.stringify(apartment)}`);
+      realEstateDatasetController.write(",");
     }
     Logger.log("Done ✅");
   }
 
-  fs.writeFileSync(
-    `real-estate-${Date.now()}.json`,
-    JSON.stringify(apartments, null, 2)
-  );
+  // fs.writeFileSync(
+  //   `real-estate-${Date.now()}.json`,
+  //   JSON.stringify(apartments, null, 2)
+  // );
 
+  realEstateDatasetController.write("]");
+  realEstateDatasetController.end();
   await browser.close();
 })();
